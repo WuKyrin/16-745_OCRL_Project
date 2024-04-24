@@ -41,6 +41,21 @@ def generate_launch_description() -> LaunchDescription:
         )
     )
 
+    # ld.add_action(
+    #     IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource(
+    #             PathJoinSubstitution(
+    #                 [
+    #                     FindPackageShare("paradocs_control"),
+    #                     "launch/",
+    #                     "single.launch.py",
+    #                 ]
+    #             )
+    #         ),
+    #     )
+    # )
+
+
     arg_name = DeclareLaunchArgument('name',             
                 default_value=PathJoinSubstitution([
                 FindPackageShare('paradocs_control'),  # Finds the install/share directory for your package
@@ -54,24 +69,36 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(arg_name)
     ld.add_action(handeye_publisher) 
 
-    ld.add_action(
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare("paradocs_control"),
-                        "launch",
-                        "static_obstacles.launch.py",
-                    ]
-                )
-            ),
-        )
+    bone_motion_node = Node(
+        package='dyna_comp',
+        executable='bone_motion.py',
+        output='screen',
+        name='bone_motion',
     )
+    ld.add_action(bone_motion_node)
 
-    drill_pose_transformer = Node(package='paradocs_control', executable='drill_pose_transformer.py', name='pose_transformer')
-    ld.add_action(drill_pose_transformer)
 
-    serial_writer = Node(package='serialcomm', executable='serialwriter_exec', name='serial_writer')
-    ld.add_action(serial_writer)
+    # ld.add_action(
+    #     IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource(
+    #             PathJoinSubstitution(
+    #                 [
+    #                     FindPackageShare("paradocs_control"),
+    #                     "launch",
+    #                     "static_obstacles.launch.py",
+    #                 ]
+    #             )
+    #         ),
+    #     )
+    # )
+
+    # drill_pose_transformer = Node(package='paradocs_control', executable='drill_pose_transformer.py', name='pose_transformer')
+    # ld.add_action(drill_pose_transformer)
+
+    # aruco_pose_transformer = Node(package='paradocs_control', executable='aruco_pose_transformer.py', name='pose_transformer')
+    # ld.add_action(aruco_pose_transformer)
+
+    # serial_writer = Node(package='serialcomm', executable='serialwriter_exec', name='serial_writer')
+    # ld.add_action(serial_writer)
 
     return ld

@@ -20,14 +20,27 @@ def generate_launch_description() -> LaunchDescription:
                     [
                         FindPackageShare("dyna_comp"),
                         "launch/include",
-                        "sim_ocrl.launch.py",
+                        "real_ocrl.launch.py",
                     ]
                 )
             ),
         )
     )
 
-    # dummy cam tf
+    ld.add_action(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("paradocs_control"),
+                        "launch",
+                        "rs_launch.py",
+                    ]
+                )
+            ),
+        )
+    )
+
     arg_name = DeclareLaunchArgument('name',             
                 default_value=PathJoinSubstitution([
                 FindPackageShare('paradocs_control'),  # Finds the install/share directory for your package
@@ -41,21 +54,13 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(arg_name)
     ld.add_action(handeye_publisher) 
 
-    bone_motion_node = Node(
-        package='dyna_comp',
-        executable='bone_motion.py',
-        output='screen',
-        name='bone_motion',
-    )
-    
-    ld.add_action(bone_motion_node)
-
-    depth_optical_tf_publisher = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=['0', '0', '0', '-1.5708', '0', '-1.5708', 'camera_link', 'camera_depth_optical_frame'],
-    )
-    ld.add_action(depth_optical_tf_publisher) 
+    # bone_motion_node = Node(
+    #     package='dyna_comp',
+    #     executable='bone_motion_aruco.py',
+    #     output='screen',
+    #     name='bone_motion_aruco',
+    # )
+    # ld.add_action(bone_motion_node)
 
 
     # ld.add_action(
@@ -75,7 +80,10 @@ def generate_launch_description() -> LaunchDescription:
     # drill_pose_transformer = Node(package='paradocs_control', executable='drill_pose_transformer.py', name='pose_transformer')
     # ld.add_action(drill_pose_transformer)
 
+    # aruco_pose_transformer = Node(package='paradocs_control', executable='aruco_pose_transformer.py', name='pose_transformer')
+    # ld.add_action(aruco_pose_transformer)
+
     # serial_writer = Node(package='serialcomm', executable='serialwriter_exec', name='serial_writer')
-    # ld.add_action(serial_writer)  
+    # ld.add_action(serial_writer)
 
     return ld

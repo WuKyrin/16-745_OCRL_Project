@@ -15,8 +15,8 @@ class PosePublisher(Node):
         super().__init__('pose_publisher')
         self.publisher_ = self.create_publisher(InteractiveMarkerFeedback, 'simple_marker/feedback', 10)
         self.tf_broadcaster = TransformBroadcaster(self)
-        # timer_period = 5
-        timer_period = 0.2  # 5 Hz
+        timer_period = 3.0  # seconds
+        # timer_period = 0.2  # 5 Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.base_pose = Pose()
         self.base_pose.position.x = -0.4
@@ -28,9 +28,12 @@ class PosePublisher(Node):
         self.base_pose.orientation.w = 0.0
 
     def timer_callback(self):
+        now = self.get_clock().now()
+        sec, nsec = now.seconds_nanoseconds()
+
         msg = InteractiveMarkerFeedback()
-        msg.header.stamp.sec = 0
-        msg.header.stamp.nanosec = 0
+        msg.header.stamp.sec = sec
+        msg.header.stamp.nanosec = nsec
         msg.header.frame_id = 'world'
         msg.client_id = "/rviz2"
         msg.marker_name = "Goal"
@@ -58,15 +61,15 @@ class PosePublisher(Node):
         # self.get_logger().info('Publishing: "%s"' % msg)
 
         # Also publish the transform
-        # t = TransformStamped()
-        # t.header.stamp = msg.header.stamp
-        # t.header.frame_id = 'world'
-        # t.child_frame_id = 'command'
-        # t.transform.translation.x = msg.pose.position.x
-        # t.transform.translation.y = msg.pose.position.y
-        # t.transform.translation.z = msg.pose.position.z
-        # t.transform.rotation = msg.pose.orientation
-        # self.tf_broadcaster.sendTransform(t)
+        t = TransformStamped()
+        t.header.stamp = msg.header.stamp
+        t.header.frame_id = 'world'
+        t.child_frame_id = 'command'
+        t.transform.translation.x = msg.pose.position.x
+        t.transform.translation.y = msg.pose.position.y
+        t.transform.translation.z = msg.pose.position.z
+        t.transform.rotation = msg.pose.orientation
+        self.tf_broadcaster.sendTransform(t)
 
 def main(args=None):
     rclpy.init(args=args)
