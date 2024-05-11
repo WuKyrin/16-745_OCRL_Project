@@ -21,7 +21,7 @@ Install this repo in ocrl_ws
 
 ## Usage
 
-For Gazebo simulation with random pose offset publisher
+- For Gazebo simulation with random pose offset publisher
 
 t1:
 ```
@@ -41,7 +41,7 @@ source ocrl_ws
 ros2 run ocs2_mobile_manipulator_ros open_loop_mrt_node_torque
 ```
 
-For physical KUKA LBR MED 7 with random pose offset publisher 
+- For physical KUKA LBR MED 7 with random pose offset publisher 
 
 t1:
 ```
@@ -61,7 +61,7 @@ source ocrl_ws
 ros2 run ocs2_mobile_manipulator_ros open_loop_mrt_node_torque
 ```
 
-For physical LBR MED 7 with Aruco marker pose
+- For physical LBR MED 7 with Aruco marker pose
 
 t1:
 ```
