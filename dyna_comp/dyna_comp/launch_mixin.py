@@ -32,7 +32,6 @@ class LBRROS2ControlMixin:
             choices=[
                 "joint_trajectory_controller",
                 "forward_position_controller",
-                "forward_velocity_controller",
                 "forward_lbr_position_command_controller",
                 "forward_lbr_torque_command_controller",
             ],

@@ -15,7 +15,7 @@ class PosePublisher(Node):
         super().__init__('pose_publisher')
         self.publisher_ = self.create_publisher(InteractiveMarkerFeedback, 'simple_marker/feedback', 10)
         self.tf_broadcaster = TransformBroadcaster(self)
-        timer_period = 3.0  # seconds
+        timer_period = 5.0  # seconds
         # timer_period = 0.2  # 5 Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.base_pose = Pose()
@@ -39,9 +39,9 @@ class PosePublisher(Node):
         msg.marker_name = "Goal"
         msg.control_name = ''
         msg.event_type = 2
-        msg.pose.position.x = self.base_pose.position.x + random.uniform(-0.01, 0.01)
-        msg.pose.position.y = self.base_pose.position.y + random.uniform(-0.01, 0.01)
-        msg.pose.position.z = self.base_pose.position.z + random.uniform(-0.01, 0.01)
+        msg.pose.position.x = self.base_pose.position.x + random.uniform(-0.05, 0.05)
+        msg.pose.position.y = self.base_pose.position.y + random.uniform(-0.05, 0.05)
+        msg.pose.position.z = self.base_pose.position.z + random.uniform(-0.05, 0.05)
         msg.pose.orientation.x = self.base_pose.orientation.x + random.uniform(-0.05, 0.05)
         msg.pose.orientation.y = self.base_pose.orientation.y + random.uniform(-0.05, 0.05)
         msg.pose.orientation.z = self.base_pose.orientation.z + random.uniform(-0.05, 0.05)
